@@ -30,8 +30,7 @@ Zookeeper集群（如需要与Kafka同步部署）:
 ## 部署架构
 
 Kafka社区版部署时，可自选Kafka的broker数量。根据最佳实践，broker必须奇数个，最多支持9台。
-同时，Kafka社区版部署时支持用户选择是否已有Zookeeper。如有，填入Zookeeper集群地址即可；如没有可以
-同步拉起一个3台节点的Zookeeper集群。
+同时，Kafka社区版部署时支持用户选择是否已有Zookeeper。如有，填入Zookeeper集群地址即可；如没有可以同步拉起一个3个节点的Zookeeper集群。
 
 ## RAM账号所需权限
 Kafka服务需要对ECS、VPC等资源进行访问和创建操作，
