@@ -84,4 +84,4 @@ Kafka服务需要对ECS、VPC等资源进行访问和创建操作，
 
 ### 使用Kafka
 
-请访问Kafka官网获取全部使用信息：[Kafka试用文档](https://kafka.apachecn.org/quickstart.html)
+请访问Kafka官网获取全部使用信息：[Kafka试用文档](https://kafka.apachecn.org/)
