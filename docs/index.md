@@ -1,196 +1,87 @@
-<h1>Kafka Community Edition Service Instance Deployment Documentation</h1>
+# kafka社区版服务实例部署文档
 
-<h2>Overview</h2>
+## 概述
 
-<p>Kafka is an open-source stream processing platform developed by the Apache Software Foundation, written in Scala and Java. The project aims to provide a unified, high-throughput, and low-latency platform for handling real-time data. Its persistence layer is essentially a "massive publish/subscribe message queue based on a distributed transaction log architecture," making it highly valuable as enterprise-grade infrastructure for processing streaming data.</p>
 
-<h2>Billing Description</h2>
+Kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。
+该项目的目标是为处理实时数据提供一个统一、高吞吐、低延迟的平台。
+其持久化层本质上是一个“按照分布式事务日志架构的大规模发布/订阅消息队列”，这使它作为企业级基础设施来处理流式数据非常有价值。
 
-<p>The costs for Kafka Community Edition on Compute Nest mainly involve:</p>
+## 计费说明
 
-<p><strong>Kafka Cluster:</strong></p>
-<ul>
-    <li>Selected vCPU and memory specifications</li>
-    <li>Disk capacity</li>
-    <li>Number of machines</li>
-</ul>
+Kafka社区版在计算巢上的费用主要涉及：
 
-<p><strong>ZooKeeper Cluster (if deployed synchronously with Kafka):</strong></p>
-<ul>
-    <li>Selected vCPU and memory specifications</li>
-    <li>Disk capacity</li>
-</ul>
+Kafka集群:
+- 所选vCPU与内存规格
+- 磁盘容量
+- 机器数量
 
-<p>Billing methods include:</p>
-<ul>
-    <li>Pay-As-You-Go (hourly)</li>
-    <li>Subscription (Yearly/Monthly)</li>
-</ul>
+Zookeeper集群（如需要与Kafka同步部署）:
+- 所选vCPU与内存规格
+- 磁盘容量
 
-<p>Estimated costs can be viewed in real-time during instance creation.</p>
+计费方式包括：
+- 按量付费（小时）
+- 包年包月
 
-<h2>Deployment Architecture</h2>
+预估费用在创建实例时可实时看到。
 
-<p>When deploying Kafka Community Edition, you can choose the number of Kafka brokers. According to best practices, the number of brokers must be odd, with a maximum support of 9 nodes. Additionally, during deployment, users can choose whether an existing ZooKeeper cluster is available. If yes, enter the ZooKeeper cluster address; if not, a 3-node ZooKeeper cluster can be launched synchronously.</p>
 
-<h2>Required Permissions for RAM Accounts</h2>
+## 部署架构
 
-<p>The Kafka service requires access and creation operations for resources such as ECS and VPC. If you use a RAM user to create a service instance, you must add the corresponding resource permissions to the RAM user account before creating the instance. For detailed operations on adding <a href="https://help.aliyun.com/document_detail/121945.html" target="_blank">RAM permissions</a>, please refer to "Authorize RAM Users." The required permissions are listed in the table below.</p>
+Kafka社区版部署时，可自选Kafka的broker数量。根据最佳实践，broker必须奇数个，最多支持9台。
+同时，Kafka社区版部署时支持用户选择是否已有Zookeeper。如有，填入Zookeeper集群地址即可；如没有可以同步拉起一个3个节点的Zookeeper集群。
 
-<table border="1" cellspacing="0" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Permission Policy Name</th>
-            <th>Remarks</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>AliyunECSFullAccess</td>
-            <td>Permission to manage Elastic Compute Service (ECS)</td>
-        </tr>
-        <tr>
-            <td>AliyunVPCFullAccess</td>
-            <td>Permission to manage Virtual Private Cloud (VPC)</td>
-        </tr>
-        <tr>
-            <td>AliyunROSFullAccess</td>
-            <td>Permission to manage Resource Orchestration Service (ROS)</td>
-        </tr>
-        <tr>
-            <td>AliyunComputeNestUserFullAccess</td>
-            <td>User-side permission to manage Compute Nest services</td>
-        </tr>
-        <tr>
-            <td>AliyunCloudMonitorFullAccess</td>
-            <td>Permission to manage Cloud Monitor</td>
-        </tr>
-    </tbody>
-</table>
+## RAM账号所需权限
+Kafka服务需要对ECS、VPC等资源进行访问和创建操作，
+若您使用RAM用户创建服务实例，需要在创建服务实例前，
+对使用的RAM用户的账号添加相应资源的权限。添加[RAM权限](https://help.aliyun.com/document_detail/121945.html)的详细操作，请参见为RAM用户授权。所需权限如下表所示。
 
-<h2>Deployment Process</h2>
+| 权限策略名称 | 备注               |
+| --- |------------------|
+| AliyunECSFullAccess | 管理云服务器服务（ECS）的权限 |
+| AliyunVPCFullAccess | 管理专有网络（VPC）的权限   |
+| AliyunROSFullAccess | 管理资源编排服务（ROS）的权限 |
+| AliyunComputeNestUserFullAccess | 管理计算巢服务（ComputeNest）的用户侧权限|
+| AliyunCloudMonitorFullAccess | 管理云监控（CloudMonitor）的权限|
 
-<h3>Deployment Steps</h3>
 
-<p>Click the <a href="https://computenest.console.aliyun.com/user/cn-hangzhou/serviceInstanceCreate?ServiceId=service-8c341545f86c4f5492e1" target="_blank">deployment link</a> to enter the service instance deployment interface. Follow the prompts on the interface to fill in the parameters and complete the deployment.</p>
+## 部署流程
 
-<h3>Deployment Parameter Description</h3>
+### 部署步骤
+单击[部署链接](https://computenest.console.aliyun.com/user/cn-hangzhou/serviceInstanceCreate?ServiceId=service-8c341545f86c4f5492e1)，进入服务实例部署界面，根据界面提示，填写参数完成部署。
+### 部署参数说明
+| 参数组            | 参数项                 | 示例            | 说明                                                                    |
+|----------------|---------------------|---------------|-----------------------------------------------------------------------|
+| 服务实例名称         |                     | test          | 实例的名称                                                                 |
+| 地域             |                     | 华北2（北京）       | 选中服务实例的地域，建议就近选中，以获取更好的网络延时。                                          |
+| 付费类型配置         | 付费类型                | 按量付费 或 包年包月   |                                                                       |
+| 可用区与基础资源配置     | 交换机可用区              | 可用区I          | 地域下的不同可用区                                                             |
+| 可用区与基础资源配置     | 专有网络VPC实例ID         | vpc-xxx       | 选择专有网络的ID                                                             |
+| 可用区与基础资源配置     | 交换机实例ID             | vsw-xxxx      | 选择交换机ID。若找不到交换机, 可尝试切换地域和可用区                                          |
+| kafka ECS实例配置  | kafka服务实例数量         | 3             | kafka的broker数量，可以根据业务压力选择                                             |
+| kafka ECS实例配置  | kafka服务ECS实例类型      | AMD通用型g7a     | 实例规格，可以根据实际需求选择                                                       |
+| kafka ECS实例配置  | kafka系统盘空间          | 40            | 系统盘空间，可以根据实际需求选择                                                      |
+| kafka ECS实例配置  | kafka数据盘空间          | 40            | 数据盘空间，可以根据实际需求选择                                                      |
+| kafka ECS实例配置  | kafka实例密码           | ****          | 设置实例密码。长度830个字符，必须包含三项（大写字母、小写字母、数字、()`!@#$%^&*-+={}[]:;'<>,.?/ 中的特殊符号） |
+| zookeeper 集群配置  | 是否已有zookeeper集群     | true          | 根据实际情况选择                                                              |
+| zookeeper 集群配置  | zookeeper地址（有集群情况下） | 10.x.x.0:2181 | 多个地址用半角逗号隔开，例如 10.x.x.0:2181,10.x.x.1:2181                            |
+| zookeeper 集群配置  | zookeeper服务ECS实例类型（无集群情况下） | AMD通用型g7a     | 实例规格，可以根据实际需求选择                               |
+| zookeeper 集群配置  | zookeeper系统盘空间（无集群情况下）   | 40            | 系统盘空间，可以根据实际需求选择                              |
+| zookeeper 集群配置  | zookeeper数据盘空间（无集群情况下）   | 40            | 数据盘空间，可以根据实际需求选择   |
+| zookeeper 集群配置  | zookeeper实例密码（无集群情况下）    | ****  | 设置实例密码。长度830个字符，必须包含三项（大写字母、小写字母、数字、()`!@#$%^&*-+={}[]:;'<>,.?/ 中的特殊符号）  |
 
-<table border="1" cellspacing="0" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Parameter Group</th>
-            <th>Parameter Item</th>
-            <th>Example</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan="1">Service Instance Name</td>
-            <td></td>
-            <td>test</td>
-            <td>Name of the instance</td>
-        </tr>
-        <tr>
-            <td rowspan="1">Region</td>
-            <td></td>
-            <td>China (Beijing)</td>
-            <td>Select the region for the service instance. It is recommended to select the nearest region to obtain better network latency.</td>
-        </tr>
-        <tr>
-            <td rowspan="1">Billing Configuration</td>
-            <td>Billing Method</td>
-            <td>Pay-As-You-Go or Subscription</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td rowspan="3">Availability Zone & Basic Resource Configuration</td>
-            <td>VSwitch Availability Zone</td>
-            <td>Zone I</td>
-            <td>Different availability zones within the region</td>
-        </tr>
-        <tr>
-            <td>VPC Instance ID</td>
-            <td>vpc-xxx</td>
-            <td>Select the VPC ID</td>
-        </tr>
-        <tr>
-            <td>VSwitch Instance ID</td>
-            <td>vsw-xxxx</td>
-            <td>Select the VSwitch ID. If the VSwitch cannot be found, try switching regions and availability zones.</td>
-        </tr>
-        <tr>
-            <td rowspan="5">Kafka ECS Instance Configuration</td>
-            <td>Number of Kafka Service Instances</td>
-            <td>3</td>
-            <td>Number of Kafka brokers. Choose based on business pressure.</td>
-        </tr>
-        <tr>
-            <td>Kafka Service ECS Instance Type</td>
-            <td>AMD General Purpose g7a</td>
-            <td>Instance specification. Choose based on actual requirements.</td>
-        </tr>
-        <tr>
-            <td>Kafka System Disk Space</td>
-            <td>40</td>
-            <td>System disk space. Choose based on actual requirements.</td>
-        </tr>
-        <tr>
-            <td>Kafka Data Disk Space</td>
-            <td>40</td>
-            <td>Data disk space. Choose based on actual requirements.</td>
-        </tr>
-        <tr>
-            <td>Kafka Instance Password</td>
-            <td>****</td>
-            <td>Set the instance password. Length: 8-30 characters. Must contain at least three of the following: uppercase letters, lowercase letters, digits, and special symbols ()`!@#$%^&*-+={}[]:;'<>,.?/</td>
-        </tr>
-        <tr>
-            <td rowspan="6">ZooKeeper Cluster Configuration</td>
-            <td>Existing ZooKeeper Cluster?</td>
-            <td>true</td>
-            <td>Select based on actual situation.</td>
-        </tr>
-        <tr>
-            <td>ZooKeeper Address (if cluster exists)</td>
-            <td>10.x.x.0:2181</td>
-            <td>Separate multiple addresses with half-width commas, e.g., 10.x.x.0:2181,10.x.x.1:2181</td>
-        </tr>
-        <tr>
-            <td>ZooKeeper Service ECS Instance Type (if no cluster)</td>
-            <td>AMD General Purpose g7a</td>
-            <td>Instance specification. Choose based on actual requirements.</td>
-        </tr>
-        <tr>
-            <td>ZooKeeper System Disk Space (if no cluster)</td>
-            <td>40</td>
-            <td>System disk space. Choose based on actual requirements.</td>
-        </tr>
-        <tr>
-            <td>ZooKeeper Data Disk Space (if no cluster)</td>
-            <td>40</td>
-            <td>Data disk space. Choose based on actual requirements.</td>
-        </tr>
-        <tr>
-            <td>ZooKeeper Instance Password (if no cluster)</td>
-            <td>****</td>
-            <td>Set the instance password. Length: 8-30 characters. Must contain at least three of the following: uppercase letters, lowercase letters, digits, and special symbols ()`!@#$%^&*-+={}[]:;'<>,.?/</td>
-        </tr>
-    </tbody>
-</table>
+![1.png](1.png)
 
-<h3>Verification Results</h3>
+### 验证结果
+1、查看服务实例。 服务实例创建成功后，部署时间大约需要2分钟。部署完成后，页面上可以看到对应的服务实例。
 
-<ol>
-    <li>
-        <p><strong>View Service Instance:</strong> After the service instance is successfully created, the deployment takes approximately 2 minutes. Once deployment is complete, the corresponding service instance will be visible on the page.</p>
-    </li>
-    <li>
-        <p><strong>Access Kafka via Service Instance:</strong></p>
-    </li>
-</ol>
+![2.png](2.png)
 
-<h3>Using Kafka</h3>
+2、通过服务实例访问Kafka
 
-<p>Please visit the official Kafka website for full usage information: <a href="https://kafka.apachecn.org/" target="_blank">Kafka Trial Documentation</a></p>
+![3.png](3.png)
+
+### 使用Kafka
+
+请访问Kafka官网获取全部使用信息：[Kafka试用文档](https://kafka.apachecn.org/)
